@@ -1,0 +1,6 @@
+[submodule "be-opname"]
+	path = be-opname
+	url = git@github.com:januarsyah901/BE-OPNAME.git
+[submodule "fe-opname"]
+	path = fe-opname
+	url = https://github.com/hafidzrizqullahprasetya/auto-service.git
