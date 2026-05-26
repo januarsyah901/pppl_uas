@@ -1,17 +1,55 @@
 # Laporan Progress: Inisiasi Framework BDD + Cucumber + POM + Playwright
-**Kelompok**: Janu, Fahim, Akmal, Hafidz
 
-Semua infrastruktur dasar pengujian otomatis telah selesai diinisialisasi di dalam folder `e2e-testing/`. Dependensi pengujian juga telah berhasil terinstal 100% tanpa kendala di laptop bang jan.
+**Nama**: Januarsyah Akbar (24/535846/SV/24314)\
+**Kelompok**: Janu, Fahim, Akmal, Hafidz
+---
+
+## Pembagian Tugas
+
+### Detail Distribusi Pekerjaan:
+
+#### Janu — *Automation QA Engineer 1*
+*   **Tanggung Jawab**:
+    *   Menginisialisasi folder framework pengujian (`e2e-testing/` project) dan membuat fondasi base class POM (`BasePage.js`) serta Hooks global.
+    *   Merancang test case (BVA/EP) & mengimplementasikan POM dan Step Definitions untuk **Halaman 1 (Auth / Login Page)**.
+*   **Target Output File**:
+    *   `e2e-testing/page_objects/BasePage.js` & `e2e-testing/support/hooks.js`
+    *   `e2e-testing/page_objects/LoginPage.js`
+    *   `e2e-testing/step_definitions/auth_steps.js`
+
+#### Fahim — *Automation QA Engineer 2*
+*   **Tanggung Jawab**:
+    *   Mengonfigurasi berkas integrasi runner (`package.json`, `cucumber.js`) dan menulis spesifikasi skenario BDD Gherkin global (`.feature`).
+    *   Merancang test case (BVA/EP) & mengimplementasikan POM dan Step Definitions untuk **Halaman 2 (Dashboard / Home Page)**.
+*   **Target Output File**:
+    *   `e2e-testing/features/stock_opname_e2e.feature`
+    *   `e2e-testing/page_objects/DashboardPage.js`
+    *   `e2e-testing/step_definitions/dashboard_steps.js`
+
+#### Akmal — *Automation QA Engineer 3*
+*   **Tanggung Jawab**:
+    *   Merancang test case (BVA/EP) & mengimplementasikan POM dan Step Definitions untuk **Halaman 3 (Daftar Stok Barang / Inventory Page)** dan **Halaman 4 (Form Stock Opname Page - Input Bagian 1)**.
+*   **Target Output File**:
+    *   `e2e-testing/page_objects/InventoryPage.js`
+    *   `e2e-testing/step_definitions/inventory_steps.js`
+
+#### Hafidz — *Automation QA Engineer 4*
+*   **Tanggung Jawab**:
+    *   Mengonfigurasi berkas *Automated HTML Report* (`reporter.js`) dan menyusun berkas laporan *bug* (`BUG_REPORTING.md`).
+    *   Merancang test case (BVA/EP) & mengimplementasikan POM dan Step Definitions untuk **Halaman 4 (Form Stock Opname Page - Aksi/Submit Bagian 2)** dan **Halaman 5 (Detail/Konfirmasi Opname & Log Activity & Logout)**.
+*   **Target Output File**:
+    *   `e2e-testing/page_objects/DetailPage.js` & `e2e-testing/page_objects/OpnameFormPage.js`
+    *   `e2e-testing/step_definitions/detail_steps.js`
+    *   `e2e-testing/support/reporter.js` & `e2e-testing/reports/BUG_REPORTING.md`
 
 ---
 
-## Tugas Janu
 
 Janu bertanggung jawab untuk melakukan setup folder pengujian, membuat base class POM (BasePage.js), Hooks global, serta membuat POM, Step Definitions, dan rancangan Test Case untuk Halaman 1 (Auth / Login Page).
 
 ---
 
-## 2. Struktur Folder Framework yang Terbentuk
+## 1. Struktur Folder Framework yang Terbentuk
 
 Semua berkas pengujian diisolasi sepenuhnya di dalam folder `e2e-testing/` di root proyek:
 
@@ -40,7 +78,7 @@ e2e-testing/
 
 ---
 
-## 3. Detail Berkas Kode yang Telah Dibuat
+## 2. Detail Berkas Kode yang Telah Dibuat
 
 ### A. `package.json`
 Mendefinisikan pustaka otomatisasi pengujian serta skrip perintah eksekusi tes.
@@ -71,7 +109,6 @@ Mendefinisikan pustaka otomatisasi pengujian serta skrip perintah eksekusi tes.
   }
 }
 ```
-*(Status: **Selesai & Terinstal 100% via `npm install`**)*
 
 ---
 
@@ -98,7 +135,7 @@ module.exports = {
   }
 };
 ```
-*(Status: **Selesai**)*
+
 
 ---
 
@@ -156,7 +193,7 @@ AfterStep(async function (stepResult) {
   }
 });
 ```
-*(Status: **Selesai**)*
+
 
 ---
 
@@ -228,69 +265,8 @@ class BasePage {
 
 module.exports = BasePage;
 ```
-*(Status: **Selesai**)*
+
 
 ---
 
-### E. `stock_opname_e2e.feature`
-Skenario BDD dalam format standar bahasa Inggris (Given, When, Then, Scenario, Feature) yang mendefinisikan kasus uji positif E2E (melewati 5 halaman) dan negatif (untuk Equivalence Partitioning dan Boundary Value Analysis).
 
-```gherkin
-Feature: End-to-End Stock Opname and Inventory Workflow
-  As a warehouse staff / workshop admin,
-  I want to be able to log in, search for spare parts, perform stock opname adjustments,
-  and view the activity log history to ensure physical stock matches the system.
-
-  Background:
-    Given the user opens the Auto Service login page
-
-  @negative @equivalence_partitioning
-  Scenario: Failed login authentication with invalid credentials (EP)
-    When the user enters email "wrong@service.com"
-    And the user enters password "password123"
-    And the user clicks the login button
-    Then the user should see an error message "Kredensial tidak cocok"
-
-  @positive @boundary_value_analysis @end_to_end
-  Scenario: Complete end-to-end stock opname workflow (E2E)
-    # Page 1: Login
-    When the user enters email "admin@service.com"
-    And the user enters password "password123"
-    And the user clicks the login button
-    
-    # Page 2: Dashboard
-    Then the user should be redirected to the Dashboard page
-    And the user should see the stock summary widgets on the Dashboard
-    When the user clicks the "Inventori Stok" menu in the sidebar
-    
-    # Page 3: Stock Inventory List
-    Then the user should be redirected to the Stock List page
-    And the user should see the spare parts inventory table
-    When the user searches for "Kampas Rem"
-    And the user clicks the "Opname" action button for that item
-    
-    # Page 4: Stock Opname Form
-    Then the user should be redirected to the Stock Opname Form page
-    And the user should see the item name "Kampas Rem" displayed on the form
-    When the user enters physical quantity "15"
-    And the user enters notes "Penyesuaian stok fisik rutin bulanan Mei 2026"
-    And the user clicks the "Simpan Opname" button
-    
-    # Page 5: Detail & Log Opname
-    Then the user should see a success notification "Opname berhasil disimpan"
-    And the user should be redirected to the Opname History Log page
-    And the user should see the latest log entry with quantity "15" and notes "Penyesuaian stok fisik rutin bulanan Mei 2026"
-    
-    # Logout Session
-    When the user clicks the "Logout" button in the sidebar
-    Then the user should be redirected back to the Auto Service login page
-```
-*(Status: **Selesai**)*
-
----
-
-## 4. Langkah Selanjutnya (Ready to Code POM & Steps)
-
-Kerangka ini sudah sepenuhnya siap dipakai. Anggota tim dapat langsung membuat file di laptop masing-masing pada folder `page_objects/` dan `step_definitions/` sesuai dengan rancangan ini.
-
-Untuk melihat visualisasi lengkap rancangan tes kelompok, silakan buka berkas rancangan di `TEST_PLANNING.md`.
