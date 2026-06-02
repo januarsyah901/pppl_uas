@@ -1,4 +1,4 @@
-# Proyek Akhir Praktikum Pengujian Perangkat Lunak - Auto Service
+# Proyek Akhir PPPL - Auto Service
 
 Proyek ini merupakan repositori utama untuk sistem manajemen bengkel dan inventori bernama Auto Service. Repositori ini mengintegrasikan seluruh komponen sistem yang terdiri dari backend api, frontend dashboard, dan framework pengujian otomatis end-to-end (E2E).
 

@@ -14,7 +14,7 @@ Pembagian tugas ini dirancang agar setiap anggota kelompok bertindak sebagai **A
                                                       │
        ┌──────────────────────────┬───────────────────┴──────────────┬──────────────────────────┐
        ▼                          ▼                                  ▼                          ▼
- [ Janu  ]       [ Fahim ]                          [ Akmal ]                  [ Hafidz ]
+   [ Janu  ]                   [ Fahim ]                          [ Akmal ]                  [ Hafidz ]
  ├─ Setup Base & Hook      ├─ Gherkin & Config                ├─ POM & Steps Page 3      ├─ POM & Steps Page 5
  ├─ POM & Steps Page 1     ├─ POM & Steps Page 2              ├─ POM & Steps Page 4 (A)  ├─ POM & Steps Page 4 (B)
  └─ Test Case Page 1       └─ Test Case Page 2                └─ Test Case Page 3 & 4(A) └─ Bug Report & HTML Report
@@ -89,7 +89,7 @@ sequenceDiagram
 2.  **Halaman 2 (Dashboard)**: `fe-opname/src/app/(dashboard)/page.tsx`
     *   *Deskripsi*: Ringkasan statistik operasional bengkel, total antrean, dan stok kritis.
 3.  **Halaman 3 (Inventori - Daftar Stok)**: `fe-opname/src/app/(dashboard)/inventori/stok/page.tsx`
-    *   *Deskripsi*: Daftar tabel inventori suku cadang/barang dengan pencarian dan filter.
+        *   *Deskripsi*: Daftar tabel inventori suku cadang/barang dengan pencarian dan filter.
 4.  **Halaman 4 (Form Stock Opname)**: `fe-opname/src/app/(dashboard)/inventori/opname/page.tsx`
     *   *Deskripsi*: Form penyesuaian jumlah fisik barang secara aktual.
 5.  **Halaman 5 (Detail/Log Opname)**: `fe-opname/src/app/(dashboard)/inventori/opname/` (halaman tabel riwayat hasil opname yang tersimpan).
@@ -106,7 +106,7 @@ Tabel berikut dirancang khusus menggunakan teknik pengujian fungsional untuk dis
 | Test Case ID | Skenario Input | Kelas Ekivalen | Harapan Hasil | Status |
 | :--- | :--- | :--- | :--- | :--- |
 | **TC-EP-001** | Email: `admin@service.com` (Terdaftar)<br>Password: `password123` (Benar) | **Valid Credentials** | Berhasil masuk ke Halaman Dashboard | [ ] Belum Diuji |
-| **TC-EP-002** | Email: `salah@service.com` (Tidak Terdaftar)<br>Password: `password123` | **Invalid Email** | Muncul pesan error "Kredensial tidak cocok" | [ ] Belum Diuji |
+| **TC-EP-002** | Email: `salah@service.com` (Tidak Terdaftar)<br>Password: `password123` | **Invalid Email** | Muncul pesan error "Kredensial tidak cocok" | [x] Lolos (Diuji otomatis oleh Janu) |
 | **TC-EP-003** | Email: `admin@service.com`<br>Password: `pass` (Terlalu Pendek / < 8 Karakter) | **Invalid Password (Short)** | Muncul validasi form "Password minimal 8 karakter" | [ ] Belum Diuji |
 | **TC-EP-004** | Email: `admin@service.com`<br>Password: `password123456789012345678901` (>20 Karakter) | **Invalid Password (Long)** | Muncul validasi form "Password maksimal 20 karakter" | [ ] Belum Diuji |
 
