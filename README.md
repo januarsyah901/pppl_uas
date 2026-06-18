@@ -1,119 +1,145 @@
 # Proyek Akhir PPPL - Auto Service
 
-Proyek ini merupakan repositori utama untuk sistem manajemen bengkel dan inventori bernama Auto Service. Repositori ini mengintegrasikan seluruh komponen sistem yang terdiri dari backend api, frontend dashboard, dan framework pengujian otomatis end-to-end (E2E).
+Proyek ini merupakan repositori utama untuk sistem manajemen bengkel dan inventori bernama **Auto Service**. Repositori ini mengintegrasikan seluruh komponen sistem yang terdiri dari backend API, frontend dashboard, dan framework pengujian otomatis end-to-end (E2E) untuk memenuhi tugas responsi praktikum **Pengujian Perangkat Lunak (PPPL)**.
 
 Sistem dikelola dalam struktur monorepo dengan memanfaatkan Git Submodules untuk modul aplikasi utama, sehingga riwayat commit dan repositori masing-masing layanan tetap terisolasi dan mandiri.
 
-## Komponen Proyek
+---
 
-Proyek ini terbagi menjadi tiga bagian utama:
+## 1. Penjelasan Singkat SUT (System Under Test)
 
-1. be-opname (Submodule)
-   Layanan Backend API berbasis Node.js yang dibangun menggunakan Express.js, TypeScript, dan Prisma ORM dengan basis data PostgreSQL. Modul ini bertanggung jawab mengelola seluruh logika bisnis, autentikasi, serta interaksi basis data.
+**Auto Service** adalah aplikasi berbasis web yang berfungsi sebagai platform manajemen operasional bengkel otomotif modern. Fitur-fitur utama SUT meliputi:
+*   **Autentikasi & Otorisasi**: Login admin, kasir, dan petugas dengan pembagian hak akses (role-based access control).
+*   **Manajemen Antrean & Kasir**: Pendaftaran antrean kendaraan masuk dan pemrosesan transaksi pembayaran oleh kasir.
+*   **Katalog Sparepart & Jasa**: Pendataan suku cadang, oli, ban, serta katalog paket jasa servis bengkel.
+*   **Stok Opname (MVP Utama)**: Rekonsiliasi pencatatan stok di sistem dengan jumlah stok fisik aktual yang ada di gudang bengkel untuk meminimalisir selisih.
 
-2. fe-opname (Submodule)
-   Aplikasi Frontend berupa dashboard web interaktif untuk admin dan petugas inventori. Dibangun menggunakan Next.js (React), TypeScript, dan Tailwind CSS untuk antarmuka yang modern dan responsif.
+---
 
-3. e2e-testing (Direktori Root)
-   Framework pengujian otomatis berbasis End-to-End (E2E) menggunakan kombinasi Playwright, Cucumber (Behavior-Driven Development / BDD Gherkin), dan pola desain Page Object Model (POM).
+## 2. Penjelasan Singkat Test Suite
 
-## Struktur Repositori
+*Test Suite* dirancang khusus untuk menguji keandalan alur bisnis MVP utama pada SUT, yaitu alur **Stock Opname dari hulu ke hilir**.
 
-Struktur direktori utama proyek ini diatur sebagai berikut:
+*   **Framework**: Pengujian ini dibangun menggunakan kombinasi **Playwright** (sebagai browser automation tool) dan **CucumberJS** (untuk framework BDD berbasis Gherkin Syntax).
+*   **Pola Desain (Design Pattern)**: Menerapkan **Page Object Model (POM)** secara ketat dengan memisahkan selector/locator elemen UI ([page_objects](file:///Users/fizualstd/Documents/GitHub/pppl_uas/e2e-testing/page_objects)) dari instruksi langkah pengujian ([step_definitions](file:///Users/fizualstd/Documents/GitHub/pppl_uas/e2e-testing/step_definitions)).
+*   **Metode Uji yang Digunakan**:
+    1.  **Equivalence Partitioning (EP)**: Digunakan untuk memvalidasi halaman autentikasi/login dengan skenario kelas ekivalen kredensial valid dan tidak valid (TC-EP-001 s.d TC-EP-004).
+    2.  **Boundary Value Analysis (BVA)**: Digunakan untuk menguji keandalan kolom input jumlah fisik aktual pada form opname dengan batas nilai minimum (0), di bawah batas bawah (-1), dan batas atas kapasitas (9999) (TC-BVA-001 s.d TC-BVA-006).
+*   **Laporan Otomatis (Automated Report)**: Mengintegrasikan `cucumber-html-reporter` yang otomatis mengompilasi file JSON hasil pengujian menjadi laporan visual HTML interaktif, lengkap dengan grafik persentase kelulusan dan tangkapan layar (screenshot) otomatis jika terjadi kegagalan pengujian.
 
-pad-2/
-|-- be-opname/                      # Submodule Backend API (Express.js)
-|-- fe-opname/                      # Submodule Frontend Dashboard (Next.js)
-|-- e2e-testing/                    # Framework Pengujian E2E (Playwright & Cucumber)
-|   |-- features/                   # Berkas spesifikasi skenario BDD (.feature)
-|   |-- page_objects/               # Representasi halaman web (POM)
+---
+
+## 3. Pembagian Tugas Kelompok (QA Automation Team)
+
+Pembagian peran dirancang secara adil agar setiap QA Automation Engineer bertanggung jawab penuh terhadap modul perencanaan test case, pembuatan Page Object Model (POM), dan implementasi Step Definitions:
+
+| Anggota Kelompok | Peran & Tanggung Jawab | File Output Terkait |
+| :--- | :--- | :--- |
+| **Januarsyah Akbar**<br>(QA Engineer 1) | Inisialisasi arsitektur dasar pengujian, konfigurasi Hooks global, class dasar [BasePage.js](file:///Users/fizualstd/Documents/GitHub/pppl_uas/e2e-testing/page_objects/BasePage.js), dan E2E Halaman 1 (Auth / Login Page). | `BasePage.js`, `LoginPage.js`, `auth_steps.js`, `hooks.js` |
+| **Fahim**<br>(QA Engineer 2) | Integrasi konfigurasi runner Cucumber, penyusunan berkas skenario BDD Gherkin global, dan E2E Halaman 2 (Dashboard Page). | `stock_opname_e2e.feature`, `DashboardPage.js`, `cucumber.js` |
+| **Akmal**<br>(QA Engineer 3) | Perancangan test case (EP/BVA), implementasi E2E Halaman 3 (Daftar Stok) dan Halaman 4 (Form Opname - Pengisian Input). | `InventoryPage.js`, `inventory_steps.js` |
+| **Hafidz**<br>(QA Engineer 4) | Konfigurasi automated HTML report, pembuatan laporan bug [BUG_REPORTING.md](file:///Users/fizualstd/Documents/GitHub/pppl_uas/e2e-testing/reports/BUG_REPORTING.md), E2E Halaman 4 (Form Opname - Submit) dan Halaman 5 (Detail/Log & Logout). | `OpnameFormPage.js`, `DetailPage.js`, `detail_steps.js`, `reporter.js`, `BUG_REPORTING.md` |
+
+---
+
+## 4. Struktur Repositori
+
+Struktur direktori utama repositori diatur sebagai berikut:
+
+```text
+pppl_uas/
+|-- be-opname/                      # [Submodule] Backend API (Express.js, TS, Prisma)
+|-- fe-opname/                      # [Submodule] Frontend Dashboard (Next.js, TS, Tailwind)
+|-- e2e-testing/                    # [Direktori Root] Framework Pengujian E2E (Playwright & Cucumber)
+|   |-- features/
+|   |   `-- stock_opname_e2e.feature  # Berkas spesifikasi skenario BDD Gherkin
+|   |-- page_objects/               # Design Pattern Page Object Model (POM)
+|   |   |-- BasePage.js             # Utility interaksi browser dasar (Playwright wrapper)
+|   |   |-- LoginPage.js            # Selector & aksi halaman Login
+|   |   |-- DashboardPage.js        # Selector & aksi halaman Dashboard
+|   |   |-- InventoryPage.js        # Selector & aksi halaman Daftar Stok Opname
+|   |   |-- OpnameFormPage.js       # Selector & aksi modal pengisian fisik opname
+|   |   `-- DetailPage.js           # Selector & aksi modal log detail riwayat opname
 |   |-- step_definitions/           # Implementasi langkah pengujian Gherkin
-|   |-- support/                    # Konfigurasi pembantu, Hooks, dan Reporter
+|   |   |-- auth_steps.js           # Langkah uji terkait Login & Autentikasi
+|   |   |-- inventory_steps.js      # Langkah uji terkait Dashboard & Form Input Opname
+|   |   `-- detail_steps.js         # Langkah uji terkait Detail Log Riwayat & Logout
+|   |-- support/
+|   |   |-- hooks.js                # Setup lifecycle browser & Tangkapan Layar jika Gagal
+|   |   `-- reporter.js             # Skrip generator Laporan HTML Otomatis
+|   |-- reports/                    # Folder output laporan & dokumentasi pengujian
+|   |   |-- html/                   # Output visual Cucumber HTML Reporter
+|   |   `-- BUG_REPORTING.md        # Laporan temuan bug pengujian (BVA & EP)
 |   |-- package.json                # Manifest dependensi framework pengujian
-|   `-- cucumber.js                 # Berkas konfigurasi Cucumber
+|   `-- cucumber.js                 # Berkas konfigurasi CucumberJS
 |-- PROGRESS.md                     # Laporan kemajuan pengerjaan tim
-|-- TEST_PLANNING.md                # Dokumen perencanaan pengujian dan skenario BVA/EP
-|-- .gitignore                      # Berkas pengabaian Git di tingkat root
+|-- TEST_PLANNING.md                # Dokumen rencana uji, skenario BVA & EP lengkap
 `-- .gitmodules                     # Konfigurasi Git Submodules
+```
 
-## Alur Pengujian E2E
+---
 
-Pengujian dilakukan untuk memvalidasi alur bisnis utama sepanjang lima halaman web interaktif:
+## 5. Panduan Instalasi dan Penggunaan
 
-1. Halaman 1 (Autentikasi / Login)
-   Verifikasi pembatasan akses masuk sistem dengan uji batas kredensial (BVA dan EP).
+### 1. Kloning Repositori beserta Seluruh Submodule
 
-2. Halaman 2 (Dashboard Utama)
-   Pemeriksaan komponen ringkasan statistik operasional bengkel, total antrean, dan notifikasi stok kritis.
+Untuk mengunduh proyek ini beserta seluruh submodul di dalamnya secara otomatis, jalankan perintah berikut secara rekursif:
 
-3. Halaman 3 (Daftar Stok Inventori)
-   Pengujian fitur pencarian, penyaringan data suku cadang, dan navigasi menuju proses penyesuaian stok (opname).
-
-4. Halaman 4 (Formulir Stock Opname)
-   Validasi input jumlah fisik aktual, perhitungan selisih otomatis, dan pengisian catatan penyesuaian.
-
-5. Halaman 5 (Detail dan Log Aktivitas)
-   Verifikasi penyimpanan data opname ke database, sinkronisasi log riwayat aktivitas, dan penutupan sesi (logout).
-
-## Panduan Instalasi dan Penggunaan
-
-### 1. Kloning Repositori
-
-Untuk mengunduh proyek ini beserta seluruh submodul di dalamnya, jalankan perintah berikut secara rekursif:
-
+```bash
 git clone --recursive https://github.com/januarsyah901/pppl_uas.git
 cd pppl_uas
+```
 
-Jika Anda terlanjur melakukan kloning biasa tanpa menyertakan seluruh submodul, jalankan perintah berikut di dalam direktori proyek:
+Jika terlanjur melakukan kloning biasa tanpa menyertakan submodul, jalankan perintah ini di dalam direktori proyek:
 
+```bash
 git submodule update --init --recursive
+```
 
-### 2. Konfigurasi Backend (be-opname)
+### 2. Konfigurasi & Menjalankan Backend (be-opname)
 
-Masuk ke direktori backend, pasang dependensi, lakukan konfigurasi environment, dan jalankan server:
+Masuk ke direktori backend, pasang dependensi, salin environment variables, dan jalankan server API:
 
+```bash
 cd be-opname
 npm install
 cp .env.example .env
+# Sesuaikan isi DATABASE_URL dan JWT_SECRET di .env jika perlu
 npx prisma db push
 npm run dev
+```
 
-### 3. Konfigurasi Frontend (fe-opname)
+### 3. Konfigurasi & Menjalankan Frontend (fe-opname)
 
-Masuk ke direktori frontend, pasang dependensi, lakukan konfigurasi environment, dan jalankan server Next.js:
+Masuk ke direktori frontend, pasang dependensi, lakukan konfigurasi environment, dan jalankan server Next.js (berjalan pada port `3333`):
 
+```bash
 cd ../fe-opname
 npm install
 cp .env.example .env
 npm run dev
+```
 
 ### 4. Eksekusi Pengujian E2E (e2e-testing)
 
-Masuk ke direktori e2e-testing, pasang dependensi pengujian (Playwright dan Cucumber), lalu jalankan skenario tes:
+Masuk ke direktori pengujian, pasang dependensi, lalu jalankan runner test:
 
+```bash
 cd ../e2e-testing
 npm install
 npx playwright install
 npm test
+```
 
-Untuk membuat laporan hasil pengujian dalam format HTML interaktif setelah tes selesai dijalankan, gunakan perintah:
+### 5. Membuat dan Melihat Laporan HTML Otomatis
 
+Setelah pengujian selesai dijalankan, Anda dapat meng-compile file JSON menjadi HTML report interaktif dengan perintah:
+
+```bash
 npm run report
+```
 
-Laporan akan dihasilkan secara otomatis di dalam direktori e2e-testing/reports/.
+Laporan HTML interaktif akan ter-generate di:
+`e2e-testing/reports/html/cucumber_report.html`
 
-## Pembagian Peran QA Automation Team
-
-Proyek pengujian otomatis ini dikembangkan secara kolaboratif oleh anggota kelompok berikut dengan rincian tanggung jawab masing-masing:
-
-1. Januarsyah Akbar (QA Engineer 1)
-   Inisialisasi dasar framework pengujian, pembuatan base class Page Object Model (BasePage.js), konfigurasi Hooks global, serta perancangan dan implementasi pengujian Halaman 1 (Auth/Login Page).
-
-2. Fahim (QA Engineer 2)
-   Konfigurasi runner Cucumber, penulisan berkas spesifikasi skenario BDD global (.feature), serta perancangan dan implementasi pengujian Halaman 2 (Dashboard Page).
-
-3. Akmal (QA Engineer 3)
-   Perancangan dan implementasi pengujian Halaman 3 (Daftar Stok/Inventory Page) dan Halaman 4 (Formulir Stock Opname bagian input data).
-
-4. Hafidz (QA Engineer 4)
-   Konfigurasi laporan otomatis (HTML Reporter), pembuatan berkas laporan bug (BUG_REPORTING.md), serta perancangan dan implementasi pengujian Halaman 4 (Formulir Stock Opname bagian aksi submit) dan Halaman 5 (Detail Opname, Log, dan Logout).
+Laporan ini dapat dibuka langsung di Google Chrome untuk melihat visualisasi status kelulusan pengujian, grafik performa, serta tangkapan layar kegagalan skenario.

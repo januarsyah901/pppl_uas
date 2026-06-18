@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "cucumber-js",
-    "report": "node support/reporter.js"
+    "report": "node reporter.js"
   },
   "keywords": [
     "testing",
