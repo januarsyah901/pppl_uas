@@ -1,3 +1,9 @@
+/**
+ * @file detail_steps.js
+ * @description Step Definitions for Stock Opname confirmation detail logs and session logout
+ * @author Hafidz (QA Engineer 4)
+ */
+
 const { Then } = require("@cucumber/cucumber");
 const assert = require("assert");
 const DetailPage = require("../page_objects/DetailPage");

@@ -1,3 +1,9 @@
+/**
+ * @file inventory_steps.js
+ * @description Step Definitions for Dashboard and Inventory Stock Opname Form (EP/BVA input)
+ * @author Akmal (QA Engineer 3)
+ */
+
 const { When, Then } = require("@cucumber/cucumber");
 const assert = require("assert");
 const DashboardPage = require("../page_objects/DashboardPage");

@@ -1,3 +1,9 @@
+/**
+ * @file BasePage.js
+ * @description Parent class POM for browser utilities and common interactions
+ * @author Januarsyah Akbar (QA Engineer 1)
+ */
+
 class BasePage {
   /**
    * @param {import('playwright').Page} page

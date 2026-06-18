@@ -1,3 +1,9 @@
+/**
+ * @file reporter.js
+ * @description Automated Cucumber HTML Report Compiler configuration
+ * @author Hafidz (QA Engineer 4)
+ */
+
 const reporter = require("cucumber-html-reporter");
 const fs = require("fs");
 const path = require("path");

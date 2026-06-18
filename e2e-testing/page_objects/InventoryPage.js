@@ -1,3 +1,9 @@
+/**
+ * @file InventoryPage.js
+ * @description Page Object Model for Stock Opname list page
+ * @author Akmal (QA Engineer 3)
+ */
+
 const BasePage = require("./BasePage");
 
 class InventoryPage extends BasePage {

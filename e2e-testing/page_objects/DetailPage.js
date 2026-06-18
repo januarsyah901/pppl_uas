@@ -1,3 +1,9 @@
+/**
+ * @file DetailPage.js
+ * @description Page Object Model for Stock Opname detail modal and history logs
+ * @author Hafidz (QA Engineer 4)
+ */
+
 const BasePage = require("./BasePage");
 
 class DetailPage extends BasePage {

@@ -1,3 +1,9 @@
+/**
+ * @file auth_steps.js
+ * @description Step Definitions for authentication scenarios (Login & Invalid credentials)
+ * @author Januarsyah Akbar (QA Engineer 1)
+ */
+
 const { Given, When, Then } = require("@cucumber/cucumber");
 const assert = require("assert");
 const LoginPage = require("../page_objects/LoginPage");

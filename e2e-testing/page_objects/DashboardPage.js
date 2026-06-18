@@ -1,3 +1,9 @@
+/**
+ * @file DashboardPage.js
+ * @description Page Object Model for Dashboard Page
+ * @author Fahim (QA Engineer 2)
+ */
+
 const BasePage = require("./BasePage");
 
 class DashboardPage extends BasePage {

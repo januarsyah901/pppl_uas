@@ -1,3 +1,9 @@
+/**
+ * @file LoginPage.js
+ * @description Page Object Model for Auth / Login Page
+ * @author Januarsyah Akbar (QA Engineer 1)
+ */
+
 const BasePage = require("./BasePage");
 
 class LoginPage extends BasePage {

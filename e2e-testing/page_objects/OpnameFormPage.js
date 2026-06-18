@@ -1,3 +1,9 @@
+/**
+ * @file OpnameFormPage.js
+ * @description Page Object Model for Active Stock Opname modal form
+ * @author Hafidz (QA Engineer 4)
+ */
+
 const BasePage = require("./BasePage");
 
 class OpnameFormPage extends BasePage {
