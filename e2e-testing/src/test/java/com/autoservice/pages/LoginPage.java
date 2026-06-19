@@ -2,20 +2,20 @@ package com.autoservice.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.List;
+import java.time.Duration;
 
 /**
  * @file LoginPage.java
- * @description Page Object Model for Auth / Login Page in Java
+ * @description Page Object Model untuk halaman Login Auto Service
  * @author Januarsyah Akbar (QA Engineer 1)
  */
 public class LoginPage extends BasePage {
     private final By usernameInput = By.cssSelector("input[name='username']");
     private final By passwordInput = By.cssSelector("input[name='password']");
-    private final By submitButton = By.cssSelector("button[type='submit']");
-    private final By errorMessageSelector = By.cssSelector("p.text-red-500");
+    private final By submitButton  = By.cssSelector("button[type='submit']");
 
     public LoginPage(WebDriver driver) {
         super(driver);
@@ -37,19 +37,7 @@ public class LoginPage extends BasePage {
         click(submitButton);
     }
 
-    public String getErrorMessage() {
-        waitForElementVisible(errorMessageSelector);
-        List<WebElement> errors = driver.findElements(errorMessageSelector);
-        for (WebElement error : errors) {
-            String text = error.getText().trim();
-            if (!text.isEmpty()) {
-                return text;
-            }
-        }
-        return "";
-    }
-
-    public boolean isUsernameInputVisible() {
+    public boolean isLoginPageVisible() {
         return isElementVisible(usernameInput);
     }
 }
