@@ -26,8 +26,7 @@ public class LoginPage extends BasePage {
     }
 
     public void fillUsername(String username) {
-        String cleanUsername = username.contains("@") ? username.split("@")[0] : username;
-        fill(usernameInput, cleanUsername);
+        fill(usernameInput, username);
     }
 
     public void fillPassword(String password) {

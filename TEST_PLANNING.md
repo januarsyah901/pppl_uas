@@ -1,173 +1,113 @@
-# Rencana Pengujian E2E & Pembagian Tugas Kelompok
+# Rencana Pengujian E2E & Pembagian Tugas Kelompok (Rombak Baru)
 ## Proyek Akhir Praktikum Pengujian Perangkat Lunak
 
-Dokumen ini adalah acuan resmi perencanaan, pembagian tugas, dan skenario pengujian untuk aplikasi **Auto Service (Manajemen Bengkel & Inventori)**. Pengujian diimplementasikan menggunakan framework modern **Playwright + Cucumber (BDD Gherkin) + Page Object Model (POM)** dengan **Laporan HTML Otomatis**.
+Dokumen ini adalah acuan resmi perencanaan, pembagian tugas, dan skenario pengujian untuk aplikasi **Auto Service (Manajemen Bengkel & Inventori)** setelah perubahan fungsionalitas pengujian. Pengujian diimplementasikan menggunakan framework **Java Maven + Selenium WebDriver + Cucumber (BDD Gherkin) + Page Object Model (POM)**.
+
+Setiap skenario dirancang untuk diuji secara mandiri dari proses login peran masing-masing (Owner, Admin, Kasir, Mekanik) hingga fitur selesai digunakan (full 1 fitur per skenario).
 
 ---
 
-## 1. Pembagian Tugas Kelompok
+## 1. Pembagian Tugas Kelompok (QA Automation Team)
 
-Pembagian tugas ini dirancang agar setiap anggota kelompok bertindak sebagai **Automation QA Engineer** dengan kontribusi dalam penulisan spesifikasi skenario (*Gherkin .feature*), perancangan test case (*BVA & EP*), pembuatan *Page Object Model (POM)*, dan penulisan *Step Definitions*.
+Pembagian tugas dirancang agar setiap QA Automation Engineer bertanggung jawab penuh atas skenario fitur tertentu, dari login peran terkait hingga verifikasi akhir:
 
 ```
-                              [ Semua Anggota Kelompok = Automation QA Engineer ]
-                                                      │
-       ┌──────────────────────────┬───────────────────┴──────────────┬──────────────────────────┐
-       ▼                          ▼                                  ▼                          ▼
-   [ Janu  ]                   [ Fahim ]                          [ Akmal ]                  [ Hafidz ]
- ├─ Setup Base & Hook      ├─ Gherkin & Config                ├─ POM & Steps Page 3      ├─ POM & Steps Page 5
- ├─ POM & Steps Page 1     ├─ POM & Steps Page 2              ├─ POM & Steps Page 4 (A)  ├─ POM & Steps Page 4 (B)
- └─ Test Case Page 1       └─ Test Case Page 2                └─ Test Case Page 3 & 4(A) └─ Bug Report & HTML Report
+                               [ Semua Anggota Kelompok = Automation QA Engineer ]
+                                                       │
+        ┌──────────────────────────┬───────────────────┴──────────────┬──────────────────────────┐
+        ▼                          ▼                                  ▼                          ▼
+    [ Janu  ]                   [ Fahim ]                          [ Akmal ]                  [ Hafidz ]
+  ├─ Role: Owner              ├─ Role: Admin                     ├─ Role: Kasir             ├─ Role: Mekanik
+  ├─ Fitur: Tambah Item       ├─ Fitur: Tambah Antrean           ├─ Fitur: Buat Transaksi   ├─ Fitur: Inspection Checklist
+  ├─ Fitur: Tambah Jasa       └─ Test Case Queue                 └─ Test Case Transaksi     ├─ Bug Report (5 Fitur)
+  └─ Test Case Owner                                                                        └─ Test Case Checklist
 ```
 
 ### Detail Distribusi Pekerjaan:
 
-#### Janu — *Automation QA Engineer 1*
+#### Janu — *Automation QA Engineer 1 (Role: Owner)*
 *   **Tanggung Jawab**:
-    *   Menginisialisasi folder framework pengujian (`e2e-testing/` project) dan membuat fondasi base class POM (`BasePage.js`) serta Hooks global.
-    *   Merancang test case (BVA/EP) & mengimplementasikan POM dan Step Definitions untuk **Halaman 1 (Auth / Login Page)**.
+    *   Inisialisasi dasar POM dan konfigurasi driver Selenium.
+    *   Merancang test case & mengimplementasikan POM dan Step Definitions untuk **Fitur Tambah Item di Inventory** & **Fitur Tambah Jasa di Katalog Jasa**.
 *   **Target Output File**:
-    *   `e2e-testing/page_objects/BasePage.js` & `e2e-testing/support/hooks.js`
-    *   `e2e-testing/page_objects/LoginPage.js`
-    *   `e2e-testing/step_definitions/auth_steps.js`
+    *   [LoginPage.java](file:///C:/Users/zvwah/OneDrive/Dokumen/KULIAH/TRPL/Sem%204/PPPL/UAS/pppl_uas/e2e-testing/src/test/java/com/autoservice/pages/LoginPage.java)
+    *   [InventoryPage.java](file:///C:/Users/zvwah/OneDrive/Dokumen/KULIAH/TRPL/Sem%204/PPPL/UAS/pppl_uas/e2e-testing/src/test/java/com/autoservice/pages/InventoryPage.java)
+    *   [KatalogJasaPage.java](file:///C:/Users/zvwah/OneDrive/Dokumen/KULIAH/TRPL/Sem%204/PPPL/UAS/pppl_uas/e2e-testing/src/test/java/com/autoservice/pages/KatalogJasaPage.java)
+    *   [AuthSteps.java](file:///C:/Users/zvwah/OneDrive/Dokumen/KULIAH/TRPL/Sem%204/PPPL/UAS/pppl_uas/e2e-testing/src/test/java/com/autoservice/stepdefinitions/AuthSteps.java)
+    *   [InventorySteps.java](file:///C:/Users/zvwah/OneDrive/Dokumen/KULIAH/TRPL/Sem%204/PPPL/UAS/pppl_uas/e2e-testing/src/test/java/com/autoservice/stepdefinitions/InventorySteps.java)
+    *   `KatalogJasaSteps.java`
 
-#### Fahim — *Automation QA Engineer 2*
+#### Fahim — *Automation QA Engineer 2 (Role: Admin)*
 *   **Tanggung Jawab**:
-    *   Mengonfigurasi berkas integrasi runner (`package.json`, `cucumber.js`) dan menulis spesifikasi skenario BDD Gherkin global (`.feature`).
-    *   Merancang test case (BVA/EP) & mengimplementasikan POM dan Step Definitions untuk **Halaman 2 (Dashboard / Home Page)**.
+    *   Mengonfigurasi runner Cucumber JUnit global (`pom.xml`, `TestRunner.java`).
+    *   Penyusunan berkas skenario BDD Gherkin global (`stock_opname_e2e.feature`).
+    *   Merancang test case & mengimplementasikan POM dan Step Definitions untuk **Fitur Tambah Antrean Servis**.
 *   **Target Output File**:
-    *   `e2e-testing/features/stock_opname_e2e.feature`
-    *   `e2e-testing/page_objects/DashboardPage.js`
-    *   `e2e-testing/step_definitions/dashboard_steps.js`
+    *   `QueuePage.java`
+    *   `QueueSteps.java`
 
-#### Akmal — *Automation QA Engineer 3*
+#### Akmal — *Automation QA Engineer 3 (Role: Kasir)*
 *   **Tanggung Jawab**:
-    *   Merancang test case (BVA/EP) & mengimplementasikan POM dan Step Definitions untuk **Halaman 3 (Daftar Stok Barang / Inventory Page)** dan **Halaman 4 (Form Stock Opname Page - Input Bagian 1)**.
+    *   Merancang test case & mengimplementasikan POM dan Step Definitions untuk **Fitur Buat Transaksi Baru**.
 *   **Target Output File**:
-    *   `e2e-testing/page_objects/InventoryPage.js`
-    *   `e2e-testing/step_definitions/inventory_steps.js`
+    *   `CashierPage.java`
+    *   `CashierSteps.java`
 
-#### Hafidz — *Automation QA Engineer 4*
+#### Hafidz — *Automation QA Engineer 4 (Role: Mekanik)*
 *   **Tanggung Jawab**:
-    *   Mengonfigurasi berkas *Automated HTML Report* (`reporter.js`) dan menyusun berkas laporan *bug* (`BUG_REPORTING.md`).
-    *   Merancang test case (BVA/EP) & mengimplementasikan POM dan Step Definitions untuk **Halaman 4 (Form Stock Opname Page - Aksi/Submit Bagian 2)** dan **Halaman 5 (Detail/Konfirmasi Opname & Log Activity & Logout)**.
+    *   Mengonfigurasi automated report runner dan menyusun dokumen Laporan Bug (`bug-reports.md`) dari total 5 fitur yang diuji.
+    *   Merancang test case & mengimplementasikan POM dan Step Definitions untuk **Fitur Inspection Checklist**.
 *   **Target Output File**:
-    *   `e2e-testing/page_objects/DetailPage.js` & `e2e-testing/page_objects/OpnameFormPage.js`
-    *   `e2e-testing/step_definitions/detail_steps.js`
-    *   `e2e-testing/support/reporter.js` & `e2e-testing/reports/BUG_REPORTING.md`
+    *   `InspectionPage.java`
+    *   `InspectionSteps.java`
+    *   [bug-reports.md](file:///C:/Users/zvwah/OneDrive/Dokumen/KULIAH/TRPL/Sem%204/PPPL/UAS/pppl_uas/e2e-testing/docs/bug-reports.md)
 
 ---
 
-## 2. Skenario Pengujian End-to-End (5 Halaman Web)
+## 2. Alur & Skenario Pengujian Per Peran (5 Fitur)
 
-Skenario E2E ini mengikuti perjalanan data barang dari login sistem, pencarian, proses stock opname, hingga pencatatan riwayat transaksi/aktivitas.
+Setiap fitur memiliki modul login mandiri yang mensimulasikan login pengguna sebelum mengakses halaman utama fitur tersebut.
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    Actor QA as QA Automation
-    participant L as Halaman 1: Login
-    participant D as Halaman 2: Dashboard
-    participant I as Halaman 3: Inventori Stok
-    participant O as Halaman 4: Form Opname
-    participant DET as Halaman 5: Detail/Log
-    
-    QA->>L: Buka halaman & Input Kredensial (BVA/EP)
-    L->>D: Autentikasi Berhasil, Masuk Dashboard
-    QA->>D: Verifikasi Widget & Navigasi ke Inventori
-    D->>I: Tampilkan Tabel Stok Barang
-    QA->>I: Cari Barang & Klik Aksi "Opname"
-    I->>O: Buka Form Entry Opname Baru
-    QA->>O: Isi Selisih/Stok Aktual & Catatan (BVA/EP)
-    O->>DET: Submit Form & Simpan ke Database
-    QA->>DET: Verifikasi Data Tersimpan & Logout
+graph TD
+    subgraph Janu (Owner)
+    A[Login Owner] --> B[Tambah Item Inventory]
+    A --> C[Tambah Jasa Katalog]
+    end
+    subgraph Fahim (Admin)
+    D[Login Admin] --> E[Tambah Antrean Servis]
+    end
+    subgraph Akmal (Kasir)
+    F[Login Kasir] --> G[Buat Transaksi Baru]
+    end
+    subgraph Hafidz (Mekanik)
+    H[Login Mekanik] --> I[Inspection Checklist]
+    end
 ```
 
-### Rincian 5 Halaman yang Diuji:
-1.  **Halaman 1 (Login)**: `fe-opname/src/app/auth/sign-in/page.tsx`
-    *   *Deskripsi*: Form masuk admin/petugas inventori.
-2.  **Halaman 2 (Dashboard)**: `fe-opname/src/app/(dashboard)/page.tsx`
-    *   *Deskripsi*: Ringkasan statistik operasional bengkel, total antrean, dan stok kritis.
-3.  **Halaman 3 (Inventori - Daftar Stok)**: `fe-opname/src/app/(dashboard)/inventori/stok/page.tsx`
-        *   *Deskripsi*: Daftar tabel inventori suku cadang/barang dengan pencarian dan filter.
-4.  **Halaman 4 (Form Stock Opname)**: `fe-opname/src/app/(dashboard)/inventori/opname/page.tsx`
-    *   *Deskripsi*: Form penyesuaian jumlah fisik barang secara aktual.
-5.  **Halaman 5 (Detail/Log Opname)**: `fe-opname/src/app/(dashboard)/inventori/opname/` (halaman tabel riwayat hasil opname yang tersimpan).
-    *   *Deskripsi*: Memastikan data opname tersimpan rapi dan sesi dapat diakhiri dengan menekan tombol **Logout** di sidebar/profil.
+### Rincian Skenario BDD Gherkin:
+
+#### 1. Fitur Tambah Item di Inventory (Janu - Owner)
+*   **Deskripsi**: Owner login untuk menambahkan produk sparepart/oli baru ke sistem agar siap digunakan dalam operasional.
+*   **Alur**: Login Owner $\rightarrow$ Klik menu "Inventori Stok" $\rightarrow$ Klik "Tambah Item" $\rightarrow$ Isi Data Item (Nama, Kode, Harga, Stok Awal) $\rightarrow$ Klik Simpan $\rightarrow$ Verifikasi item muncul di tabel inventori.
+
+#### 2. Fitur Tambah Jasa di Katalog Jasa (Janu - Owner)
+*   **Deskripsi**: Owner menambahkan daftar jasa servis baru beserta harganya ke katalog bengkel.
+*   **Alur**: Login Owner $\rightarrow$ Klik menu "Katalog Jasa" $\rightarrow$ Klik "Tambah Jasa" $\rightarrow$ Isi Data Jasa (Nama Jasa, Tipe Kendaraan, Estimasi Waktu, Harga) $\rightarrow$ Klik Simpan $\rightarrow$ Verifikasi jasa berhasil tercatat di katalog.
+
+#### 3. Fitur Tambah Antrean Servis (Fahim - Admin)
+*   **Deskripsi**: Admin mendaftarkan kendaraan pelanggan yang baru datang ke bengkel ke dalam sistem antrean servis.
+*   **Alur**: Login Admin $\rightarrow$ Klik menu "Antrean Servis" $\rightarrow$ Klik "Tambah Antrean" $\rightarrow$ Isi Form (Pelanggan, Kendaraan, Keluhan Utama, Hubungkan Mekanik) $\rightarrow$ Klik Simpan $\rightarrow$ Verifikasi antrean berstatus "Menunggu" muncul di papan Kanban.
+
+#### 4. Fitur Buat Transaksi Baru (Akmal - Kasir)
+*   **Deskripsi**: Kasir memproses pembayaran untuk kendaraan yang telah selesai diservis oleh mekanik.
+*   **Alur**: Login Kasir $\rightarrow$ Klik menu "Kasir / Transaksi" $\rightarrow$ Pilih kendaraan dari antrean berstatus "Selesai Servis" $\rightarrow$ Hitung total item & jasa $\rightarrow$ Masukkan nominal pembayaran $\rightarrow$ Klik Selesaikan Transaksi $\rightarrow$ Verifikasi status transaksi berubah menjadi "Lunas/Selesai".
+
+#### 5. Fitur Inspection Checklist (Hafidz - Mekanik)
+*   **Deskripsi**: Mekanik mengisi checklist kondisi fisik kendaraan saat melakukan pemeriksaan kelayakan kendaraan pelanggan.
+*   **Alur**: Login Mekanik $\rightarrow$ Klik menu "Antrean Servis" $\rightarrow$ Pilih kendaraan aktif $\rightarrow$ Klik tombol "Mulai Inspeksi" $\rightarrow$ Centang komponen checklist (Oli, Rem, Aki, Ban, Lampu) $\rightarrow$ Simpan Checklist $\rightarrow$ Verifikasi status pemeriksaan pada antrean berubah menjadi "Selesai Inspeksi".
 
 ---
 
-## 3. Rancangan Test Case: BVA & Equivalence Partitioning (EP)
-
-Tabel berikut dirancang khusus menggunakan teknik pengujian fungsional untuk disalin langsung ke spreadsheet kelompok:
-
-### A. Equivalence Partitioning (EP) - Halaman Login
-
-| Test Case ID | Skenario Input | Kelas Ekivalen | Harapan Hasil | Status |
-| :--- | :--- | :--- | :--- | :--- |
-| **TC-EP-001** | Email: `admin@service.com` (Terdaftar)<br>Password: `password123` (Benar) | **Valid Credentials** | Berhasil masuk ke Halaman Dashboard | [ ] Belum Diuji |
-| **TC-EP-002** | Email: `salah@service.com` (Tidak Terdaftar)<br>Password: `password123` | **Invalid Email** | Muncul pesan error "Kredensial tidak cocok" | [x] Lolos (Diuji otomatis oleh Janu) |
-| **TC-EP-003** | Email: `admin@service.com`<br>Password: `pass` (Terlalu Pendek / < 8 Karakter) | **Invalid Password (Short)** | Muncul validasi form "Password minimal 8 karakter" | [ ] Belum Diuji |
-| **TC-EP-004** | Email: `admin@service.com`<br>Password: `password123456789012345678901` (>20 Karakter) | **Invalid Password (Long)** | Muncul validasi form "Password maksimal 20 karakter" | [ ] Belum Diuji |
-
-### B. Boundary Value Analysis (BVA) - Halaman Form Stock Opname (Input Selisih/Stok Aktual)
-
-*Asumsi sistem: Jumlah fisik barang aktual yang diinput harus berupa angka integer non-negatif dengan batas maksimal kapasitas gudang per barang `9999` unit.*
-
-| Test Case ID | Input Nilai Aktual | Kategori Batas | Harapan Hasil | Status |
-| :--- | :--- | :--- | :--- | :--- |
-| **TC-BVA-001** | `-1` | Di bawah batas minimum | Form menolak, tombol submit dinonaktifkan / muncul pesan error | [ ] Belum Diuji |
-| **TC-BVA-002** | `0` | Nilai batas bawah (Minimum) | Berhasil disubmit, sistem mencatat stok barang menjadi habis (0) | [ ] Belum Diuji |
-| **TC-BVA-003** | `1` | Tepat di atas batas bawah | Berhasil disubmit, sistem mencatat stok aktual = 1 | [ ] Belum Diuji |
-| **TC-BVA-004** | `9998` | Tepat di bawah batas atas | Berhasil disubmit, sistem mencatat stok aktual = 9998 | [ ] Belum Diuji |
-| **TC-BVA-005** | `9999` | Nilai batas atas (Maksimum) | Berhasil disubmit, sistem mencatat stok aktual = 9999 | [ ] Belum Diuji |
-| **TC-BVA-006** | `10000` | Di atas batas maksimum | Form menolak, muncul error "Nilai melebihi batas maksimal kapasitas" | [ ] Belum Diuji |
-
----
-
-## 4. Struktur Folder Framework Pengujian (`e2e-testing/`)
-
-Semua kode pengujian akan diletakkan di dalam folder `/Users/mrfrog/WebstormProjects/pad 2/e2e-testing/` agar rapi dan tidak mengotori kode utama frontend maupun backend.
-
-```text
-e2e-testing/
-├── features/
-│   └── stock_opname_e2e.feature      # Skenario BDD Gherkin
-├── page_objects/
-│   ├── BasePage.js                   # Class dasar POM
-│   ├── LoginPage.js                  # Page Object Login
-│   ├── DashboardPage.js              # Page Object Dashboard
-│   ├── InventoryPage.js              # Page Object Daftar Stok
-│   ├── OpnameFormPage.js             # Page Object Form Opname
-│   └── DetailPage.js                 # Page Object Detail & Log
-├── step_definitions/
-│   ├── auth_steps.js                 # Steps untuk login/logout
-│   ├── inventory_steps.js            # Steps untuk daftar stok & form opname
-│   └── detail_steps.js               # Steps untuk detail & verifikasi
-├── support/
-│   ├── hooks.js                      # Setup Playwright & Screenshot on Failure
-│   └── reporter.js                   # Konfigurasi Laporan HTML Otomatis
-├── reports/                          # Folder output laporan otomatis
-│   └── html/                         # Output cucumber-html-reporter
-├── package.json                      # Dependensi pengujian
-└── cucumber.js                       # Konfigurasi CucumberJS
-```
-
----
-
-## 5. Cara Menjalankan Pengujian & Membuat Laporan
-
-Setelah setup diselesaikan oleh **Janu**, langkah-langkah eksekusi untuk seluruh anggota kelompok adalah:
-
-1.  **Jalankan Aplikasi Web FE & BE**:
-    *   Pastikan backend `be-opname` aktif di port `3001` (atau port defaultnya).
-    *   Pastikan frontend `fe-opname` aktif di `http://localhost:3333`.
-2.  **Jalankan Pengujian**:
-    *   Buka terminal di dalam folder `e2e-testing/`
-    *   Jalankan perintah:
-        ```bash
-        npm test
-        ```
-3.  **Melihat Laporan HTML Otomatis**:
-    *   Setelah tes selesai, file laporan interaktif akan dibuat di `e2e-testing/reports/html/cucumber_report.html`.
-    *   Laporan ini dapat dibuka langsung di Google Chrome dan menyertakan grafik persentase kelulusan, serta tangkapan layar jika ada langkah pengujian yang gagal (sebagai bahan *Bug Reporting*).
+## 3. Hasil & Laporan Bug (Bug Report)
+Laporan bug dikompilasi secara menyeluruh oleh Hafidz untuk mendata semua anomali yang ditemukan pada ke-5 skenario pengujian di atas. Laporan disimpan dalam file [bug-reports.md](file:///C:/Users/zvwah/OneDrive/Dokumen/KULIAH/TRPL/Sem%204/PPPL/UAS/pppl_uas/e2e-testing/docs/bug-reports.md).

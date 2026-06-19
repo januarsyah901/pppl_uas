@@ -41,8 +41,11 @@ public class Hooks {
             try {
                 final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
                 scenario.attach(screenshot, "image/png", "Screenshot on Failure: " + scenario.getName());
+                System.out.println("--- PAGE SOURCE ON FAILURE (" + scenario.getName() + ") ---");
+                System.out.println(driver.getPageSource());
+                System.out.println("--- END OF PAGE SOURCE ---");
             } catch (Exception e) {
-                System.err.println("Gagal mengambil screenshot: " + e.getMessage());
+                System.err.println("Gagal mengambil screenshot atau page source: " + e.getMessage());
             }
         }
         if (driver != null) {

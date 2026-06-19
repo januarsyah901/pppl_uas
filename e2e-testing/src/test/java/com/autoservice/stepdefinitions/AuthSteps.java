@@ -1,6 +1,7 @@
 package com.autoservice.stepdefinitions;
 
 import com.autoservice.pages.LoginPage;
+import com.autoservice.pages.DashboardPage;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -15,6 +16,7 @@ import org.openqa.selenium.WebDriver;
 public class AuthSteps {
     private final WebDriver driver = Hooks.getDriver();
     private LoginPage loginPage;
+    private DashboardPage dashboardPage;
 
     @Given("the user opens the Auto Service login page")
     public void theUserOpensTheAutoServiceLoginPage() {
@@ -22,10 +24,10 @@ public class AuthSteps {
         loginPage.navigateToLogin();
     }
 
-    @When("the user enters email {string}")
-    public void theUserEntersEmail(String email) {
+    @When("the user enters username {string}")
+    public void theUserEntersUsername(String username) {
         loginPage = new LoginPage(driver);
-        loginPage.fillUsername(email);
+        loginPage.fillUsername(username);
     }
 
     @When("the user enters password {string}")
@@ -46,5 +48,18 @@ public class AuthSteps {
         loginPage.wait(1000);
         String actualErrorMessage = loginPage.getErrorMessage();
         Assert.assertEquals("Pesan error autentikasi tidak cocok", expectedErrorMessage.trim(), actualErrorMessage.trim());
+    }
+
+    @Then("the user should be redirected to the Dashboard page")
+    public void theUserShouldBeRedirectedToTheDashboardPage() {
+        dashboardPage = new DashboardPage(driver);
+        Assert.assertTrue("Halaman Dashboard gagal dimuat", dashboardPage.isDashboardLoaded());
+    }
+
+    @Then("the user should be redirected back to the Auto Service login page")
+    public void theUserShouldBeRedirectedBackToTheAutoServiceLoginPage() {
+        loginPage = new LoginPage(driver);
+        loginPage.wait(1000);
+        Assert.assertTrue("Tidak dialihkan kembali ke Halaman Login", loginPage.isUsernameInputVisible());
     }
 }

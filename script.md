@@ -1,67 +1,59 @@
-# Script Presentasi Progress Pengujian E2E (Januarsyah Akbar)
+# Script Presentasi Progres Pengujian E2E (Setelah Rombak Fitur)
 
-Naskah ini dirancang untuk memandu presentasi demo progres pengerjaan praktikum Pengujian Perangkat Lunak. Script dibagi menjadi durasi waktu, visual layar (apa yang ditampilkan), dan narasi lisan.
+Naskah ini dirancang untuk memandu presentasi demo progres pengerjaan praktikum Pengujian Perangkat Lunak (PPPL) setelah sistem testing dirombak total menggunakan pendekatan pengujian per peran (role-based testing).
 
 ---
 
-## 🎙️ Detail Alur dan Naskah Presentasi
+## 🎙️ Detail Alur dan Naskah Presentasi Kelompok
 
-### 1. Pembukaan dan Latar Belakang (0:00 – 0:45)
-**Visual Layar:** Menampilkan halaman depan berkas `PROGRESS.md` atau `TEST_PLANNING.md`.
+### 1. Pembukaan dan Latar Belakang Perubahan (0:00 – 1:00)
+**Visual Layar:** Menampilkan halaman utama berkas `TEST_PLANNING.md` yang baru di VS Code.
 **Narasi:**
-> "Halo semuanya, selamat pagi/siang asisten praktikum dan rekan-rekan sekalian. Saya Januarsyah Akbar. Pada kesempatan kali ini, saya akan mendemonstrasikan progres pengerjaan tugas proyek akhir praktikum Pengujian Perangkat Lunak untuk kelompok kami.
+> "Halo semuanya, selamat pagi/siang asisten praktikum dan rekan-rekan sekalian. Kami dari tim QA Automation Auto Service akan mempresentasikan progres pengerjaan tugas proyek akhir kami. 
 > 
-> Tanggung jawab utama saya dalam proyek ini berfokus pada inisiasi dan pembangunan seluruh fondasi awal *testing framework* menggunakan teknologi CucumberJS BDD, Playwright Automation, dan Page Object Model, serta mengimplementasikan skenario uji otomatis untuk Halaman 1, yaitu halaman Login/Otentikasi."
+> Berbeda dengan alur pengujian sebelumnya yang dibagi berdasarkan pemotongan halaman, kali ini kami melakukan **rombak total** dengan menerapkan pengujian berbasis **peran pengguna (role-based testing)** secara end-to-end. Skenario uji disimulasikan secara mandiri dari awal login hingga fitur selesai digunakan (full 1 fitur). Total terdapat 5 skenario fitur utama dengan 4 peran berbeda yang kami uji."
 
 ---
 
-### 2. Penjelasan Infrastruktur dan Struktur Folder (0:45 – 1:45)
-**Visual Layar:** Menampilkan struktur direktori `e2e-testing/` di VS Code / editor kode.
+### 2. Penjelasan Pembagian Fitur & Peran Anggota (1:00 – 2:30)
+**Visual Layar:** Menampilkan tabel Pembagian Tugas Kelompok di file `README.md`.
 **Narasi:**
-> "Mari kita lihat struktur proyek pengujian yang sudah berhasil dibangun. Seluruh kode pengujian diisolasi sepenuhnya di dalam direktori `e2e-testing/` agar tidak bercampur dengan kode utama aplikasi.
+> "Berikut adalah pembagian fitur dan tanggung jawab pengujian dari masing-masing anggota kelompok kami:
 > 
-> Ada beberapa file konfigurasi utama yang sudah saya selesaikan:
-> 1. **`package.json`**: Berfungsi mengelola dependensi penting seperti `@cucumber/cucumber` untuk mesin BDD, `playwright` untuk otomasi browser, dan `cucumber-html-reporter` untuk laporan pengujian.
-> 2. **`cucumber.js`**: Mengatur konfigurasi pencarian file fitur, pemetaan berkas *step definitions*, serta format keluaran data laporan berbentuk JSON.
-> 3. **`support/hooks.js`**: Mengontrol siklus hidup browser Playwright. Di sini saya juga mengimplementasikan fungsi otomatis untuk menangkap *screenshot* (tangkapan layar) secara langsung jika ada *step* pengujian yang gagal, yang kemudian disematkan langsung ke laporan akhir."
+> 1. **Januarsyah Akbar** bertanggung jawab atas inisiasi framework Selenium dan menguji peran **Owner** dengan 2 fitur utama: Tambah Item Baru di Inventory dan Tambah Jasa Baru di Katalog Jasa.
+> 2. **Fahim** mengonfigurasi runner Cucumber dan menguji peran **Admin** dengan fitur Tambah Antrean Servis baru untuk pelanggan.
+> 3. **Akmal** menguji peran **Kasir** dengan skenario pembuatan transaksi pembayaran baru untuk antrean servis yang selesai.
+> 4. **Hafidz** menguji peran **Mekanik** dengan fitur pengisian Inspection Checklist kendaraan aktif, sekaligus menyusun laporan bug komprehensif dari hasil pengetesan kelima fitur tersebut."
 
 ---
 
-### 3. Pemaparan Desain POM Dasar dan Skenario BDD (1:45 – 3:00)
-**Visual Layar:** Membuka berkas `page_objects/BasePage.js`, `page_objects/LoginPage.js`, dan `features/stock_opname_e2e.feature`.
+### 3. Pemaparan Skenario BDD Gherkin (2:30 – 4:00)
+**Visual Layar:** Membuka berkas skenario BDD Gherkin di `features/stock_opname_e2e.feature`.
 **Narasi:**
-> "Selanjutnya untuk arsitektur penulisan kode, kami menerapkan **Page Object Model (POM)** untuk memisahkan logika interaksi halaman dengan skenario tes. 
+> "Mari kita lihat berkas spesifikasi skenario BDD kami. Karena setiap pengujian diibaratkan seperti pengguna nyata yang mengakses sistem, maka masing-masing skenario pengujian memiliki langkah login tersendiri sesuai dengan hak akses perannya. 
 > 
-> Saya membuat **`BasePage.js`** sebagai kelas induk. Berkas ini bertindak sebagai pembungkus (*wrapper*) untuk API bawaan Playwright seperti klik, navigasi, pengisian input, dan menunggu elemen stabil. Hal ini memastikan kode kami *anti-flaky* saat halaman memuat lambat.
-> 
-> Dari kelas induk tersebut, saya membuat **`LoginPage.js`** khusus untuk mengontrol interaksi di form login, lengkap dengan validasi error.
-> 
-> Skenario pengujian ditulis menggunakan format Gherkin bahasa Inggris standar di berkas **`stock_opname_e2e.feature`**. Di sini, saya merancang dan menguji skenario login negatif berdasarkan metode *Equivalence Partitioning*, yaitu kasus **`TC-EP-002`** untuk menguji penolakan sistem saat memasukkan kredensial yang salah."
+> Misalnya pada skenario Owner, langkah pertama dimulai dengan login sebagai Owner, masuk ke menu Inventori/Katalog Jasa, melakukan input data, klik simpan, dan memverifikasi data di database. Alur yang sama berlaku untuk Admin, Kasir, dan Mekanik, sehingga pengujian berjalan secara independen dan terisolasi."
 
 ---
 
-### 4. Live Demo Eksekusi Pengujian Otomatis (3:00 – 4:15)
-**Visual Layar:** Buka terminal di editor, jalankan perintah `npm test` di dalam folder `e2e-testing/`. Tampilkan log jalannya pengujian hingga selesai.
+### 4. Demonstrasi Eksekusi & Laporan Bug (4:00 – 5:30)
+**Visual Layar:** Menampilkan terminal yang menjalankan perintah `mvn test` lalu membuka file laporan bug `docs/bug-reports.md`.
 **Narasi:**
-> "Sekarang, mari kita jalankan pengujiannya secara langsung menggunakan perintah `npm test`.
+> "Kami telah menjalankan seluruh rangkaian tes menggunakan Selenium Maven. Hasil pengujian menunjukkan bahwa kerangka kerja telah berjalan dengan sangat baik dan stabil.
 > 
-> Saat tes dijalankan, Playwright di latar belakang akan membuka browser Chromium, melakukan navigasi ke `http://localhost:3333/auth/sign-in`, mengetik email salah, kata sandi salah, dan menekan tombol login.
+> Dari hasil eksekusi pengujian ini, kami mengidentifikasi 5 *bug* utama yang berhasil didokumentasikan di berkas `bug-reports.md`. Beberapa di antaranya adalah:
+> - Masalah input harga negatif pada menu Owner.
+> - Kerentanan duplikasi pelat nomor pada antrean Admin.
+> - Kasir dapat memproses transaksi dengan nominal kurang dari tagihan.
+> - Mekanik dapat menyimpan checklist inspeksi dalam kondisi kosong.
 > 
-> Bisa kita lihat pada keluaran terminal di layar, skenario negatif **berhasil lulus 100% (Passed)**. Sistem berhasil menangkap pesan kesalahan validasi *"Kredensial tidak cocok"* tepat setelah tombol masuk ditekan. Hal ini membuktikan bahwa *glue code* step definitions dan logika Page Object yang saya rancang telah bekerja dengan sangat akurat dan terhubung sempurna ke frontend aplikasi."
+> Laporan bug ini sangat membantu developer kami untuk meningkatkan kualitas dan validasi data di sisi aplikasi utama."
 
 ---
 
-### 5. Penutup dan Serah Terima Tugas (4:15 – 4:45)
-**Visual Layar:** Menampilkan halaman `TEST_PLANNING.md` di kolom status `TC-EP-002` yang sudah dicentang lulus.
+### 5. Penutup (5:30 – 6:00)
+**Visual Layar:** Menampilkan grafik kesimpulan atau halaman laporan HTML otomatis Cucumber.
 **Narasi:**
-> "Dengan selesainya inisiasi arsitektur dasar ini, status pengujian negatif login di berkas perencanaan `TEST_PLANNING.md` telah resmi terverifikasi dan lulus. 
+> "Sebagai kesimpulan, transisi ke pengujian berbasis peran ini memberikan cakupan uji (test coverage) yang jauh lebih realistis karena meniru alur kerja operasional bengkel sesungguhnya di lapangan. Seluruh kode pengujian kami telah diatur rapi dan siap didemonstrasikan lebih lanjut.
 > 
-> Seluruh kerangka kerja ini juga sudah 100% siap dan stabil untuk dilanjutkan oleh anggota kelompok lainnya guna mengimplementasikan halaman berikutnya sesuai dengan porsi pembagian tugas masing-masing.
-> 
-> Demikian presentasi progres dari saya, kurang lebihnya saya mohon maaf. Terima kasih atas perhatiannya, saya kembalikan ke asisten praktikum."
-
----
-
-## 📋 Panduan Tambahan Sebelum Demonstrasi
-*   **Persiapan Awal:** Pastikan backend server (`localhost:3000`) dan frontend Next.js (`localhost:3333`) sudah menyala sebelum demonstrasi dimulai agar robot Playwright bisa melakukan navigasi tanpa kendala koneksi.
-*   **Mode Visual (Headed):** Jika asisten ingin melihat browser bergerak secara visual di layar saat demo, ubah opsi `headless: true` menjadi `headless: false` di berkas `support/hooks.js` sebelum menjalankan `npm test`.
+> Sekian presentasi dari kelompok kami. Terima kasih atas perhatian asisten praktikum dan rekan-rekan sekalian."

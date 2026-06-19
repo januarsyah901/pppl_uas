@@ -1,48 +1,85 @@
-Feature: End-to-End Stock Opname and Inventory Workflow
-  As a warehouse staff / workshop admin,
-  I want to be able to log in, search for spare parts, perform stock opname adjustments,
-  and view the activity log history to ensure physical stock matches the system.
+Feature: End-to-End Single-Role Workshop Management Workflow
 
-  Background:
+  @janu @settings @positive
+  Scenario: Success updating workshop settings (Janu)
     Given the user opens the Auto Service login page
-
-  @negative @equivalence_partitioning
-  Scenario: Failed login authentication with invalid credentials (EP)
-    When the user enters email "wrong@service.com"
-    And the user enters password "password123"
+    When the user enters username "owner"
+    And the user enters password "owner123"
     And the user clicks the login button
-    Then the user should see an error message "Kredensial tidak cocok"
-
-  @positive @boundary_value_analysis @end_to_end
-  Scenario: Complete end-to-end stock opname workflow (E2E)
-    # Page 1: Login
-    When the user enters email "admin@service.com"
-    And the user enters password "password123"
-    And the user clicks the login button
-    
-    # Page 2: Dashboard
     Then the user should be redirected to the Dashboard page
-    And the user should see the stock summary widgets on the Dashboard
-    When the user clicks the "Inventori Stok" menu in the sidebar
-    
-    # Page 3: Stock Inventory List
-    Then the user should be redirected to the Stock List page
-    And the user should see the spare parts inventory table
-    When the user searches for "Kampas Rem"
-    And the user clicks the "Opname" action button for that item
-    
-    # Page 4: Stock Opname Form
-    Then the user should be redirected to the Stock Opname Form page
-    And the user should see the item name "Kampas Rem" displayed on the form
-    When the user enters physical quantity "15"
-    And the user enters notes "Penyesuaian stok fisik rutin bulanan Mei 2026"
-    And the user clicks the "Simpan Opname" button
-    
-    # Page 5: Detail & Log Opname
-    Then the user should see a success notification "Opname berhasil disimpan"
-    And the user should be redirected to the Opname History Log page
-    And the user should see the latest log entry with quantity "15" and notes "Penyesuaian stok fisik rutin bulanan Mei 2026"
-    
-    # Logout Session
-    When the user clicks the "Logout" button in the sidebar
-    Then the user should be redirected back to the Auto Service login page
+    When the user clicks the "Pengaturan" menu in the sidebar
+    Then the user should be redirected to the Settings page
+    When the user enters workshop name "Bengkel Simple"
+    And the user enters workshop phone "08123456789"
+    And the user enters workshop address "Jl. Malioboro No. 24"
+    And the user clicks the "Simpan Profil" button
+    Then the user should see a success notification "Pengaturan berhasil disimpan"
+
+  @janu @kategori @positive
+  Scenario: Success adding a new category (Janu)
+    Given the user opens the Auto Service login page
+    When the user enters username "owner"
+    And the user enters password "owner123"
+    And the user clicks the login button
+    Then the user should be redirected to the Dashboard page
+    When the user clicks the "Kategori & Satuan" menu in the sidebar
+    Then the user should be redirected to the Category Management page
+    When the user clicks the "Tambah Kategori" button
+    And the user enters category name "Oli & Pelumas"
+    And the user enters category description "Semua jenis oli mesin dan pelumas"
+    And the user clicks the "Simpan Kategori" button
+    Then the user should see a success notification "Kategori berhasil ditambahkan"
+    And the user should see the category "Oli & Pelumas" in the category table
+
+  @fahim @pelanggan @positive
+  Scenario: Success adding a new customer (Fahim)
+    Given the user opens the Auto Service login page
+    When the user enters username "owner"
+    And the user enters password "owner123"
+    And the user clicks the login button
+    Then the user should be redirected to the Dashboard page
+    When the user clicks the "Pelanggan" menu in the sidebar
+    Then the user should be redirected to the Customer Management page
+    When the user clicks the "Tambah Pelanggan" button
+    And the user enters customer name "Budi Santoso"
+    And the user enters customer phone "08123456789"
+    And the user enters customer address "Jl. Malioboro No. 12"
+    And the user clicks the "Simpan Pelanggan" button
+    Then the user should see a success notification "Pelanggan berhasil ditambahkan"
+    And the user should see the customer "Budi Santoso" in the customer table
+
+  @akmal @karyawan @positive
+  Scenario: Success adding a new employee (Akmal)
+    Given the user opens the Auto Service login page
+    When the user enters username "owner"
+    And the user enters password "owner123"
+    And the user clicks the login button
+    Then the user should be redirected to the Dashboard page
+    When the user clicks the "Karyawan" menu in the sidebar
+    Then the user should be redirected to the Employee Management page
+    When the user clicks the "Tambah Karyawan" button
+    And the user enters employee name "Hendra Wijaya"
+    And the user enters employee username "hendra_w"
+    And the user enters employee phone "08198765432"
+    And the user enters employee password "hendra123"
+    And the user clicks the "Simpan Karyawan" button
+    Then the user should see a success notification "Karyawan berhasil ditambahkan"
+    And the user should see the employee "Hendra Wijaya" in the employee table
+
+  @hafidz @kendaraan @positive
+  Scenario: Success adding a new vehicle (Hafidz)
+    Given the user opens the Auto Service login page
+    When the user enters username "owner"
+    And the user enters password "owner123"
+    And the user clicks the login button
+    Then the user should be redirected to the Dashboard page
+    When the user clicks the "Kendaraan" menu in the sidebar
+    Then the user should be redirected to the Vehicle Management page
+    When the user clicks the "Registrasi Baru" button
+    And the user enters plate number "AB 1234 CD"
+    And the user enters vehicle brand "Toyota"
+    And the user enters vehicle model "Avanza"
+    And the user enters vehicle year "2020"
+    And the user clicks the "Daftarkan Unit" button
+    Then the user should see a success notification "Kendaraan berhasil ditambahkan"
+    And the user should see the vehicle "AB 1234 CD" in the vehicle table

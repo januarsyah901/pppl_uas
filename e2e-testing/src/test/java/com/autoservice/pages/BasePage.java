@@ -16,7 +16,7 @@ import java.time.Duration;
 public class BasePage {
     protected WebDriver driver;
     protected WebDriverWait wait;
-    protected String baseUrl = "https://auto-service-jet.vercel.app"; // URL default produksi yang sudah dideploy
+    protected String baseUrl = "http://localhost:3333"; // URL default lokal
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
@@ -38,11 +38,28 @@ public class BasePage {
         waitForElementVisible(locator).click();
     }
 
-    // Mengisi data input setelah dibersihkan
+    // Mengisi data input menggunakan React-compatible JavaScript setter
     public void fill(By locator, String text) {
-        WebElement element = waitForElementVisible(locator);
-        element.clear();
-        element.sendKeys(text);
+        try {
+            WebElement el = waitForElementVisible(locator);
+            // Scroll into view
+            ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", el);
+            try { Thread.sleep(200); } catch (Exception e) {}
+            // Use React native setter
+            ((org.openqa.selenium.JavascriptExecutor) driver).executeScript(
+                "var setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype,'value').set;" +
+                "setter.call(arguments[0], arguments[1]);" +
+                "arguments[0].dispatchEvent(new Event('input',{bubbles:true}));" +
+                "arguments[0].dispatchEvent(new Event('change',{bubbles:true}));",
+                el, text
+            );
+            try { Thread.sleep(200); } catch (Exception e) {}
+        } catch (Exception e) {
+            // Fallback to standard Selenium fill if JS fails
+            WebElement element = waitForElementVisible(locator);
+            element.clear();
+            element.sendKeys(text);
+        }
     }
 
     // Mendapatkan text dari elemen

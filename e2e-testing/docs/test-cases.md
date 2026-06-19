@@ -1,29 +1,52 @@
-# Test Cases - PPPL Java Automation Suite
+# Test Cases - PPPL Java Automation Suite (Rombak Baru)
 
-The following tables list all the test cases designed and implemented in this automation test suite.
-
-## ## 1. Authentication & Access Tests (EP)
-Tested under: `src/test/resources/features/stock_opname_e2e.feature`
-
-| ID | Page / Portal | Scenario | Steps | Expected Result | Status |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **TC-EP-001** | Login Page | Failed login with invalid email | Input wrong email, input valid password, click login | Show error "Kredensial tidak cocok" | Passed |
-| **TC-EP-002** | Login Page | Success login with valid credentials | Input valid email, input valid password, click login | Redirected to Dashboard Page | Passed |
-| **TC-EP-003** | Login Page | Failed login with short password | Input email, input password < 8 chars, click login | Validation error "Password minimal 8 karakter" | Open |
-| **TC-EP-004** | Login Page | Failed login with too long password | Input email, input password > 20 chars, click login | Validation error "Password maksimal 20 karakter" | Open (BUG-002) |
+Dokumen ini berisi daftar seluruh kasus uji (test cases) yang dirancang untuk pengujian otomatis end-to-end (E2E) berbasis peran pada aplikasi **Auto Service**.
 
 ---
 
-## ## 2. Stock Opname & Boundary Value Analysis Tests (BVA)
-Tested under: `src/test/resources/features/stock_opname_e2e.feature`
+## 1. Modul Owner (Januarsyah Akbar)
+*Tujuan: Memverifikasi kemampuan Owner dalam mengelola inventori sparepart dan katalog jasa.*
 
-*Asumsi batas input stok fisik: non-negatif integer, batas atas kapasitas gudang = 9999 unit.*
-
-| ID | Input Nilai Aktual | Kategori Batas | Harapan Hasil | Status |
+### A. Fitur: Tambah Item di Inventory
+| ID | Skenario / Kasus Uji | Langkah Pengujian | Harapan Hasil | Status |
 | :--- | :--- | :--- | :--- | :--- |
-| **TC-BVA-001** | `-1` | Di bawah batas minimum | Form menolak input, tombol submit tidak aktif | Open (BUG-001) |
-| **TC-BVA-002** | `0` | Nilai batas bawah (Minimum) | Berhasil disubmit, sistem mencatat stok habis (0) | Passed |
-| **TC-BVA-003** | `1` | Tepat di atas batas bawah | Berhasil disubmit, sistem mencatat stok = 1 | Passed |
-| **TC-BVA-004** | `9998` | Tepat di bawah batas atas | Berhasil disubmit, sistem mencatat stok = 9998 | Passed |
-| **TC-BVA-005** | `9999` | Nilai batas atas (Maksimum) | Berhasil disubmit, sistem mencatat stok = 9999 | Passed |
-| **TC-BVA-006** | `10000` | Di atas batas maksimum | Form menolak, muncul error "Nilai melebihi kapasitas" | Open |
+| **TC-OWN-001** | Tambah item baru dengan data lengkap & valid (EP) | Login Owner $\rightarrow$ Masuk ke menu Inventori Stok $\rightarrow$ Klik Tambah Item $\rightarrow$ Isi form dengan data valid $\rightarrow$ Simpan. | Item baru berhasil tersimpan dan muncul di tabel daftar inventori. | Passed |
+| **TC-OWN-002** | Input harga item bernilai negatif (BVA) | Login Owner $\rightarrow$ Masuk ke menu Inventori Stok $\rightarrow$ Klik Tambah Item $\rightarrow$ Isi harga item `-1000` $\rightarrow$ Simpan. | Form menolak, menampilkan pesan kesalahan "Harga tidak boleh bernilai negatif". | Open (BUG-002) |
+
+### B. Fitur: Tambah Jasa di Katalog Jasa
+| ID | Skenario / Kasus Uji | Langkah Pengujian | Harapan Hasil | Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **TC-OWN-003** | Tambah jasa servis baru dengan data valid (EP) | Login Owner $\rightarrow$ Masuk ke menu Katalog Jasa $\rightarrow$ Klik Tambah Jasa $\rightarrow$ Isi data lengkap $\rightarrow$ Simpan. | Jasa servis baru berhasil tercatat di katalog dan siap dipilih saat pendaftaran antrean. | Passed |
+
+---
+
+## 2. Modul Admin (Fahim)
+*Tujuan: Memverifikasi kemampuan Admin dalam mengelola pendaftaran kendaraan pelanggan.*
+
+### Fitur: Tambah Antrean Servis
+| ID | Skenario / Kasus Uji | Langkah Pengujian | Harapan Hasil | Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **TC-ADM-001** | Pendaftaran antrean servis baru untuk pelanggan (EP) | Login Admin $\rightarrow$ Masuk ke menu Antrean Servis $\rightarrow$ Klik Tambah Antrean $\rightarrow$ Isi data pelanggan, kendaraan, mekanik, & keluhan $\rightarrow$ Simpan. | Antrean servis berhasil terdaftar dengan status "Menunggu" di papan Kanban. | Passed |
+| **TC-ADM-002** | Pendaftaran antrean tanpa memilih mekanik (BVA) | Login Admin $\rightarrow$ Masuk ke menu Antrean Servis $\rightarrow$ Klik Tambah Antrean $\rightarrow$ Kosongkan pilihan mekanik $\rightarrow$ Simpan. | Antrean berhasil dibuat dan ditugaskan ke "Belum Ada Mekanik". | Passed |
+
+---
+
+## 3. Modul Kasir (Akmal)
+*Tujuan: Memverifikasi pemrosesan transaksi pembayaran oleh Kasir.*
+
+### Fitur: Buat Transaksi Baru
+| ID | Skenario / Kasus Uji | Langkah Pengujian | Harapan Hasil | Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **TC-KAS-001** | Membuat transaksi baru untuk kendaraan selesai servis (EP) | Login Kasir $\rightarrow$ Masuk ke menu Kasir $\rightarrow$ Pilih antrean berstatus "Selesai Servis" $\rightarrow$ Proses pembayaran dengan nominal pas $\rightarrow$ Selesaikan. | Transaksi tersimpan sebagai "Lunas", antrean keluar dari papan kerja, dan struk tercetak. | Passed |
+| **TC-KAS-002** | Pembayaran dengan uang kurang dari total tagihan (BVA) | Login Kasir $\rightarrow$ Masuk ke menu Kasir $\rightarrow$ Pilih antrean servis $\rightarrow$ Masukkan nominal bayar di bawah total tagihan $\rightarrow$ Simpan. | Transaksi ditolak, muncul peringatan "Jumlah pembayaran kurang". | Open (BUG-003) |
+
+---
+
+## 4. Modul Mekanik (Hafidz)
+*Tujuan: Memverifikasi pengisian checklist pemeriksaan oleh Mekanik.*
+
+### Fitur: Inspection Checklist
+| ID | Skenario / Kasus Uji | Langkah Pengujian | Harapan Hasil | Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **TC-MEK-001** | Pengisian checklist kondisi fisik kendaraan aktif (EP) | Login Mekanik $\rightarrow$ Masuk ke menu Antrean Servis $\rightarrow$ Pilih kendaraan aktif $\rightarrow$ Klik Mulai Inspeksi $\rightarrow$ Centang item checklist $\rightarrow$ Simpan. | Checklist tersimpan, status antrean berubah menjadi "Selesai Inspeksi" / "Dalam Pengerjaan". | Passed |
+| **TC-MEK-002** | Menyimpan checklist kosong tanpa mencentang apa pun (BVA) | Login Mekanik $\rightarrow$ Masuk ke menu Antrean Servis $\rightarrow$ Klik Mulai Inspeksi $\rightarrow$ Langsung klik Simpan tanpa centang. | Sistem memberikan peringatan "Harap centang minimal satu komponen pemeriksaan". | Open (BUG-004) |
