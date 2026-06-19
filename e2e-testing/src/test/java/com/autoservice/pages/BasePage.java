@@ -16,7 +16,7 @@ import java.time.Duration;
 public class BasePage {
     protected WebDriver driver;
     protected WebDriverWait wait;
-    protected String baseUrl = "http://localhost:3333"; // URL default dari fe-opname
+    protected String baseUrl = "https://auto-service-jet.vercel.app"; // URL default produksi yang sudah dideploy
 
     public BasePage(WebDriver driver) {
         this.driver = driver;

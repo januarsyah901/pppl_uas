@@ -124,10 +124,15 @@ npm run dev
 
 ### 4. Eksekusi Pengujian E2E (e2e-testing)
 
+> [!TIP]
+> **Penting untuk Demo Responsi**: Secara default, pengujian diatur untuk langsung menguji website produksi yang sudah dideploy secara online di: **https://auto-service-jet.vercel.app**.
+> Oleh karena itu, saat presentasi responsi, **Anda dan rekan kelompok Anda TIDAK perlu menyalakan backend (`be-opname`), frontend (`fe-opname`), ataupun meng-install database lokal**.
+> Anda cukup masuk ke folder `e2e-testing` dan langsung jalankan `mvn test`. Browser otomatis akan menguji website Vercel yang sudah online tersebut.
+
 Masuk ke direktori pengujian, lalu jalankan runner test menggunakan Maven:
 
 ```bash
-cd ../e2e-testing
+cd e2e-testing
 mvn test
 ```
 
