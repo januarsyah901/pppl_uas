@@ -34,3 +34,5 @@ out/
 # Test reports and screens
 e2e-testing/node_modules/
 e2e-testing/reports/
+target/
+e2e-testing/target/
